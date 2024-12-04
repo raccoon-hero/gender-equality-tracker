@@ -1,4 +1,4 @@
-# 🌍 Gender Equality Tracker  
+# Gender Equality Tracker 🫂 
 ![Python](https://img.shields.io/badge/Python-3.8+-blue?logo=python&logoColor=white)
 ![Flask](https://img.shields.io/badge/Framework-Flask-000000?logo=flask&logoColor=white)
 ![Chart.js](https://img.shields.io/badge/Visualization-Chart.js-ff6384?logo=chartdotjs&logoColor=white)
