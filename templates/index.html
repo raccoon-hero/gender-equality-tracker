@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gender Equality Tracker</title>
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Chart.js Library -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- CSS File -->
+    <link rel="stylesheet" href="/static/style.css">
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const researchGrid = document.getElementById("researchGrid");
+            const showMoreButton = document.getElementById("showMoreButton");
+    
+            // Number of items to show initially
+            const visibleItems = Math.ceil(researchGrid.children.length / 2);
+    
+            // Hide extra items initially
+            Array.from(researchGrid.children).forEach((item, index) => {
+                if (index >= visibleItems) {
+                    item.style.display = "none";
+                }
+            });
+    
+            // Toggle visibility of extra items on button click
+            showMoreButton.addEventListener("click", function () {
+                const hiddenItems = Array.from(researchGrid.children).filter(
+                    (item) => item.style.display === "none"
+                );
+                if (hiddenItems.length > 0) {
+                    hiddenItems.forEach((item) => {
+                        item.style.display = "flex"; // Show hidden items
+                    });
+                    showMoreButton.textContent = "Show Less"; // Change button text
+                } else {
+                    Array.from(researchGrid.children).forEach((item, index) => {
+                        if (index >= visibleItems) {
+                            item.style.display = "none"; // Hide items again
+                        }
+                    });
+                    showMoreButton.textContent = "Show More"; // Reset button text
+                }
+            });
+        });
+    </script>
+    
+    
+</head>
+<body>
+
+    <div class="wrapper">
+        <header class="main-hero">
+            <div class="hero-content">
+                <span class="main-country">🇺🇦 Ukraine</span>
+                <h1>Gender Representation</h1>
+                <p>Empowering insights into gender equality across nations. Dive into data that drives change.</p>
+                <div class="hero-features">
+                    <div class="feature">
+                        <img src="../static/assets/emojis/globe.png" class="feature-emoji">
+                        <h3>Global Insights</h3>
+                        <p>Explore gender equality metrics across Ukraine and neighboring countries.</p>
+                    </div>
+                    <div class="feature">
+                        <img src="../static/assets/emojis/bar_chart.png" class="feature-emoji">
+                        <h3>Dynamic Comparisons</h3>
+                        <p>Compare labor force participation, political representation, employment, and more.</p>
+                    </div>
+                    <div class="feature">
+                        <img src="../static/assets/emojis/thought_balloon.png" class="feature-emoji">
+                        <h3>Representation Matters</h3>
+                        <p>Discover various latest research papers on the topic of gender diversity.</p>
+                    </div>
+                </div>
+                <div class="hero-navigation">
+                    <a href="#overview" class="nav-link">Overview</a>
+                    <a href="#comparison" class="nav-link">Comparisons</a>
+                    <a href="#gender-naming" class="nav-link">Namings</a>
+                    <a href="#research" class="nav-link">Research</a>
+                    <a href="#sources" class="nav-link">Sources</a>
+                    <a href="#chart" class="nav-link">Chart</a>
+                </div>
+            </div>
+            <span class="header-developer">
+                Developed with hope by <a href="https://github.com/raccoon-hero">Kyryl Petrachyk</a>.
+            </span>
+        </header>
+
+        <!-- Quick Overview Section -->
+        <section class="quick-overview" id="overview">
+            <h2>Quick Overview of Gender Equality in Ukraine</h2>
+            <div class="overview-metrics">
+                {% set metrics = quick_overview_metrics %}
+        
+                <!-- Female Population -->
+                <div class="metric-card">
+                    <h3>Female Population</h3>
+                    <p>{{ metrics.female_population.value or 'N/A' }}%</p>
+                    <small>Regional Rank: {{ metrics.female_population.ranking }} out of {{ data|length }}</small>
+                </div>
+        
+                <!-- Labor Force Participation Gap -->
+                <div class="metric-card">
+                    <h3>Labor Force Participation</h3>
+                    <p>
+                        Female: {{ metrics.labor_force_participation.female or 'N/A' }}%<br>
+                        Male: {{ metrics.labor_force_participation.male or 'N/A' }}%
+                    </p>
+                    <small>Gap: {{ metrics.labor_force_participation.gap | round(2) }}%</small>
+                </div>
+        
+                <!-- Women in Parliament -->
+                <div class="metric-card">
+                    <h3>Women in Parliament</h3>
+                    <p>{{ metrics.women_in_parliament.value or 'N/A' }}%</p>
+                    <small>{{ metrics.women_in_parliament.regional_position }}</small>
+                </div>
+        
+                <!-- Unemployment Rate -->
+                <div class="metric-card">
+                    <h3>Unemployment Rate</h3>
+                    <p>
+                        Female: {{ metrics.unemployment_rate.female or 'N/A' }}%<br>
+                        Male: {{ metrics.unemployment_rate.male or 'N/A' }}%
+                    </p>
+                    <small>{{ metrics.unemployment_rate.trend }}</small>
+                </div>
+        
+                <!-- Sector Employment -->
+                <div class="metric-card">
+                    <h3>Women Employment Sectors</h3>
+                    <p>Most Common: {{ metrics.sector_employment.most_common }}</p>
+                    <small>{{ metrics.sector_employment.comparison_to_region }}</small>
+                </div>
+        
+                <!-- Wage and Salaried Workers -->
+                <div class="metric-card">
+                    <h3>Wage and Salaried Workers</h3>
+                    <p>{{ metrics.wage_and_salaried_workers.context }}</p>
+                </div>
+
+                <!-- Maternal Mortality -->
+                <div class="metric-card">
+                    <h3>Maternal Mortality Ratio</h3>
+                    <p>{{ metrics.maternal_mortality_comparison.value or 'N/A' }} per 100,000</p>
+                    <small>{{ metrics.maternal_mortality_comparison.comparison_to_region }}</small>
+                </div>
+
+                <!-- Youth Literacy Gap -->
+                <div class="metric-card">
+                    <h3>Youth Literacy Rate</h3>
+                    <p>
+                        Female: {{ metrics.youth_literacy_gap.female or 'N/A' }}%<br>
+                        Male: {{ metrics.youth_literacy_gap.male or 'N/A' }}%
+                    </p>
+                    <small>Gap: {{ metrics.youth_literacy_gap.gap | round(2) }}%</small>
+                </div>
+
+                <!-- Self-Employment -->
+                <div class="metric-card">
+                    <h3>Self-Employment</h3>
+                    <p>
+                        Female: {{ metrics.self_employment.female or 'N/A' }}%<br>
+                        Male: {{ metrics.self_employment.male or 'N/A' }}%
+                    </p>
+                    <small>{{ metrics.self_employment.context }}</small>
+                </div>
+
+                <!-- Financial Access -->
+                <div class="metric-card">
+                    <h3>Financial Access</h3>
+                    <p>{{ metrics.financial_access.value or 'N/A' }}%</p>
+                    <small>{{ metrics.financial_access.context }}</small>
+                </div>
+
+                <!-- Vulnerable Employment -->
+                <div class="metric-card">
+                    <h3>Vulnerable Employment</h3>
+                    <p>
+                        Female: {{ metrics.vulnerable_employment.female or 'N/A' }}%<br>
+                        Male: {{ metrics.vulnerable_employment.male or 'N/A' }}%
+                    </p>
+                    <small>{{ metrics.vulnerable_employment.context }}</small>
+                </div>
+            </div>
+        </section>
+
+        <!-- Comparison Table Section -->
+        <section class="comparison-table" id="comparison">
+            <h2>Country-by-Country Comparison</h2>
+            
+            <!-- Key Highlights -->
+            <div class="comparison-highlights">
+                <div class="highlight">
+                    <p><strong>Highest "Female Population":</strong> {{ world_bank_highlights.top_female_population_country }} 
+                    ({{ world_bank_highlights.top_female_population }}%)</p>
+                </div>
+                <div class="highlight">
+                    <p><strong>Highest "Women in Parliament":</strong> {{ world_bank_highlights.top_parliament_country }} 
+                    ({{ world_bank_highlights.top_parliament }}%)</p>
+                </div>
+                <div class="highlight">
+                    <p><strong>Lowest "Female Labor Force Participation":</strong> {{ world_bank_highlights.lowest_labor_force_country }} 
+                    ({{ world_bank_highlights.lowest_labor_force }}%)</p>
+                </div>
+            </div>
+            
+            <!-- Data Table -->
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Country</th>
+                            {% for indicator, label in indicator_labels.items() %}
+                            <th>{{ label }}</th>
+                            {% endfor %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for country, stats in data.items() %}
+                        <tr>
+                            <td>{{ country }}</td>
+                            {% for indicator, label in indicator_labels.items() %}
+                            <td>
+                                {{ stats[indicator] or 'N/A' }}
+                                {% if stats[indicator] %}
+                                <div class="bar" style="width: {{ stats[indicator] }}%; background: {{ indicator_colors[indicator] }};" 
+                                    title="{{ stats[indicator] }}%"></div>
+                                {% endif %}
+                            </td>
+                            {% endfor %}
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+        </section>
+
+        <!-- Named After Comparison -->    
+        <section class="gender-naming-barometer" id="gender-naming">
+            <h2>Gender Representation in Streets and Buildings</h2>
+            <p class="barometer-summary">
+                Of all streets and buildings named after individuals in Ukraine, <strong>{{ gender_named_counts['female'] }}</strong> are named after women, while <strong>{{ gender_named_counts['male'] }}</strong> are named after men.
+            </p>
+            <div class="barometer-container">
+                <div class="barometer female" style="width: {{ gender_named_counts['female'] / (gender_named_counts['female'] + gender_named_counts['male']) * 100 }}%;">
+                    <p>{{ (gender_named_counts['female'] / (gender_named_counts['female'] + gender_named_counts['male']) * 100) | round(1) }}%</p>
+                </div>
+                <div class="barometer male" style="width: {{ gender_named_counts['male'] / (gender_named_counts['female'] + gender_named_counts['male']) * 100 }}%;">
+                    <p>{{ (gender_named_counts['male'] / (gender_named_counts['female'] + gender_named_counts['male']) * 100) | round(1) }}%</p>
+                </div>
+            </div>
+            <div class="tooltip-container">
+                <div class="tooltip">
+                    <span class="tooltip-key">♀ Women</span>
+                    <span class="tooltip-value">{{ gender_named_counts['female'] }}</span>
+                </div>
+                <div class="tooltip">
+                    <span class="tooltip-key">♂ Men</span>
+                    <span class="tooltip-value">{{ gender_named_counts['male'] }}</span>
+                </div>
+            </div>
+            <div class="source-link">
+                <a href="https://www.wikidata.org/wiki/Wikidata:Main_Page" target="_blank" rel="noopener">Source: WikiData</a>
+            </div>
+        </section>
+
+        <!-- Latest Research -->
+        <section class="latest-research" id="research">
+            <h2>Latest Research on Gender Equality</h2>
+            <p class="research-intro">Explore recent studies on gender equality from top academic sources.</p>
+            <div class="research-grid" id="researchGrid">
+                {% for paper in research_papers %}
+                <div class="research-card">
+                    <!-- Header -->
+                    <div class="card-header">
+                        <h3 title="{{ paper.title }}">{{ paper.title[:80] }}{% if paper.title|length > 80 %}...{% endif %}</h3>
+                        {% if paper.open_access %}
+                        <span class="badge open-access">Open Access</span>
+                        {% else %}
+                        <span class="badge closed-access">Not Open Access</span>
+                        {% endif %}
+                        <p class="journal-name">{{ paper.journal }}</p>
+                    </div>
+                    
+                    <!-- Body -->
+                    <div class="card-body">
+                        <p><strong>Categories:</strong> 
+                            {% for category in paper.categories %}
+                                {{ category }}{% if not loop.last %}, {% endif %}
+                            {% endfor %}
+                        </p>
+                        <p><strong>Author(s):</strong> {{ paper.authors }}{% if paper.authors|length > 1 %} et al.{% endif %}</p>
+                    </div>
+                    
+                    <!-- Footer -->
+                    <div class="card-footer">
+                        {% if paper.open_access %}
+                        <a href="{{ paper.link }}" target="_blank" class="read-more-link">Read Full Paper</a>
+                        {% else %}
+                        <a href="{{ paper.link }}" target="_blank" class="read-more-link">Original Source</a>
+                        {% endif %}
+                        <span class="publication-date">{{ paper.publication_date }}</span>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            <button id="showMoreButton" class="show-more-btn">Show More</button>
+        </section>
+
+        <!-- Useful Sources -->
+        <section class="data-sources-carousel" id="sources">
+            <h2>Explore Useful Data & Statistics</h2>
+            <p class="carousel-summary">
+                Discover valuable insights and datasets from leading sources on gender equality and related topics.
+            </p>
+            <div class="carousel-container">
+                <div class="carousel-item">
+                    <h3>WikiData</h3>
+                    <p class="key-info">
+                        <strong>Key Topics:</strong> Structured data, knowledge graphs, gender representation.
+                    </p>
+                    <p>
+                        WikiData offers a collaborative knowledge graph with extensive structured data, ideal for analyzing gender equality metrics globally and locally.
+                    </p>
+                    <a href="https://www.wikidata.org/wiki/Wikidata:Main_Page" target="_blank" rel="noopener">Visit WikiData →</a>
+                </div>
+                <div class="carousel-item">
+                    <h3>DBPedia</h3>
+                    <p class="key-info">
+                        <strong>Key Topics:</strong> Semantic data, historical trends, gender insights.
+                    </p>
+                    <p>
+                        DBPedia provides a rich semantic database, enabling detailed exploration of historical and gender-focused datasets.
+                    </p>
+                    <a href="https://dbpedia.org/" target="_blank" rel="noopener">Visit DBPedia →</a>
+                </div>
+                <div class="carousel-item">
+                    <h3>Держстат</h3>
+                    <p class="key-info">
+                        <strong>Key Topics:</strong> Official Ukrainian statistics, gender demographics.
+                    </p>
+                    <p>
+                        The Ukrainian State Statistics Service provides authoritative data on population, labor markets, and more.
+                    </p>
+                    <a href="https://stat.gov.ua/uk/" target="_blank" rel="noopener">Visit Держстат →</a>
+                </div>
+                <div class="carousel-item">
+                    <h3>World Bank</h3>
+                    <p class="key-info">
+                        <strong>Key Topics:</strong> Global development, labor force, political representation.
+                    </p>
+                    <p>
+                        Access global indicators like labor force participation and women in parliament through the World Bank’s API.
+                    </p>
+                    <a href="https://api.worldbank.org/v2/" target="_blank" rel="noopener">Visit World Bank →</a>
+                </div>
+                <div class="carousel-item">
+                    <h3>OpenAlex</h3>
+                    <p class="key-info">
+                        <strong>Key Topics:</strong> Research papers, citations, academic trends.
+                    </p>
+                    <p>
+                        OpenAlex is a comprehensive open catalog of scholarly works, offering detailed data on academic publications and their global impact.
+                    </p>
+                    <a href="https://openalex.org/" target="_blank" rel="noopener">Visit OpenAlex →</a>
+                </div>                
+            </div>
+        </section>
+        
+        <!-- Comparison Chart Section -->
+        <section class="comparison-chart" id="chart">
+            <h2>Gender Equality Data Comparison</h2>
+            <canvas id="countryComparisonChart"></canvas>
+        </section>
+
+        <!-- Footer Section -->
+        <footer class="footer">
+            <div class="footer-grid">
+                <!-- About Section -->
+                <div class="footer-item about">
+                    <h3>About</h3>
+                    <p>
+                        Gender Representation Tracker leverages reliable data to shed more light on the state of gender equality in Ukraine, and provides an easier introduction to the topic with all of the latest available information from open sources.
+                    </p>
+                </div>
+
+                <!-- Developer Section -->
+                <div class="footer-item developer">
+                    <h3>Developer</h3>
+                    <p>
+                        Built with hope by <strong>Kyryl Petrachyk</strong>.
+                    </p>
+                </div>
+
+                <!-- Quick Links Section -->
+                <div class="footer-item links">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="https://data.worldbank.org/" target="_blank">World Bank</a></li>
+                        <li><a href="https://dbpedia.org/" target="_blank">DBPedia</a></li>
+                        <li><a href="https://www.wikidata.org/" target="_blank">WikiData</a></li>
+                        <li><a href="https://stat.gov.ua/" target="_blank">Держстат</a></li>
+                        <li><a href="https://openalex.org/" target="_blank">OpenAlex</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>Data sourced from World Bank, WikiData, OpenAlex, and other open repositories. &copy; 2024 Kyryl's Gender Equality Tracker</p>
+            </div>
+        </footer>
+
+        <!-- Chart.js Script for Dynamic Data Chart -->
+        <script>
+            const countryLabels = {{ data.keys() | list | tojson }};
+            const laborForceFemaleData = {{ data.values() | map(attribute='labor_force_participation_female') | map('default', 0) | list | tojson }};
+            const womenInParliamentData = {{ data.values() | map(attribute='women_in_parliament') | map('default', 0) | list | tojson }};
+            const vulnerableEmploymentFemaleData = {{ data.values() | map(attribute='vulnerable_employment_female') | map('default', 0) | list | tojson }};
+            const vulnerableEmploymentMaleData = {{ data.values() | map(attribute='vulnerable_employment_male') | map('default', 0) | list | tojson }};
+            const maternalMortalityRatioData = {{ data.values() | map(attribute='maternal_mortality_ratio') | map('default', 0) | list | tojson }};
+            const selfEmployedFemaleData = {{ data.values() | map(attribute='self_employed_female') | map('default', 0) | list | tojson }};
+            const selfEmployedMaleData = {{ data.values() | map(attribute='self_employed_male') | map('default', 0) | list | tojson }};
+
+            // Distinct color palette for better visual differentiation
+            const colorPalette = [
+                'rgba(54, 162, 235, 0.2)', // Blue
+                'rgba(255, 99, 132, 0.2)', // Red
+                'rgba(255, 206, 86, 0.2)', // Yellow
+                'rgba(75, 192, 192, 0.2)', // Teal
+                'rgba(153, 102, 255, 0.2)', // Purple
+                'rgba(255, 159, 64, 0.2)', // Orange
+                'rgba(201, 203, 207, 0.2)', // Grey
+                'rgba(123, 239, 178, 0.2)'  // Green
+            ];
+
+            const borderColorPalette = [
+                'rgba(54, 162, 235, 0.8)', // Blue
+                'rgba(255, 99, 132, 0.8)', // Red
+                'rgba(255, 206, 86, 0.8)', // Yellow
+                'rgba(75, 192, 192, 0.8)', // Teal
+                'rgba(153, 102, 255, 0.8)', // Purple
+                'rgba(255, 159, 64, 0.8)', // Orange
+                'rgba(201, 203, 207, 0.8)', // Grey
+                'rgba(123, 239, 178, 0.8)'  // Green
+            ];
+
+            const ctx = document.getElementById('countryComparisonChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: [
+                        'Labor Force Participation (Female)', 
+                        'Women in Parliament', 
+                        'Vulnerable Employment (Female)', 
+                        'Vulnerable Employment (Male)', 
+                        'Maternal Mortality Ratio', 
+                        'Self-Employed (Female)', 
+                        'Self-Employed (Male)'
+                    ],
+                    datasets: countryLabels.map((country, index) => ({
+                        label: country,
+                        data: [
+                            laborForceFemaleData[index] || 0,
+                            womenInParliamentData[index] || 0,
+                            vulnerableEmploymentFemaleData[index] || 0,
+                            vulnerableEmploymentMaleData[index] || 0,
+                            maternalMortalityRatioData[index] || 0,
+                            selfEmployedFemaleData[index] || 0,
+                            selfEmployedMaleData[index] || 0
+                        ],
+                        backgroundColor: colorPalette[index % colorPalette.length],
+                        borderColor: borderColorPalette[index % borderColorPalette.length],
+                        pointBackgroundColor: borderColorPalette[index % borderColorPalette.length],
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: borderColorPalette[index % borderColorPalette.length],
+                        borderWidth: 2
+                    }))
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Gender Equality Metrics by Country',
+                            font: {
+                                size: 18,
+                                weight: 'bold'
+                            },
+                            color: '#333'
+                        },
+                        legend: {
+                            display: true,
+                            position: 'top',
+                            labels: {
+                                font: {
+                                    size: 14
+                                },
+                                color: '#333',
+                                padding: 20
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(tooltipItem) {
+                                    return `${tooltipItem.dataset.label}: ${tooltipItem.raw} (${tooltipItem.label})`;
+                                }
+                            },
+                            backgroundColor: '#f9f9f9',
+                            titleFont: { size: 14 },
+                            bodyFont: { size: 12 },
+                            borderColor: '#ddd',
+                            borderWidth: 1,
+                            titleColor: '#333',
+                            bodyColor: '#666',
+                            displayColors: true
+                        }
+                    },
+                    scales: {
+                        r: {
+                            grid: {
+                                color: '#ddd',
+                                circular: true
+                            },
+                            angleLines: {
+                                color: '#aaa'
+                            },
+                            pointLabels: {
+                                font: {
+                                    size: 14
+                                },
+                                color: '#333'
+                            },
+                            ticks: {
+                                display: true,
+                                backdropColor: '#fff',
+                                color: '#555',
+                                font: {
+                                    size: 12
+                                },
+                                stepSize: 10,
+                                max: 100,
+                                callback: function(value) {
+                                    return value + '%';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        </script>
+    </div>
+
+</body>
+</html>
