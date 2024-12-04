@@ -1,15 +1,16 @@
 # 🌍 Gender Equality Tracker  
-![Python](https://img.shields.io/badge/Python-3.8+-blue?logo=python&logoColor=white)  
-![Flask](https://img.shields.io/badge/Framework-Flask-000000?logo=flask&logoColor=white)  
-![Chart.js](https://img.shields.io/badge/Visualization-Chart.js-ff6384?logo=chartdotjs&logoColor=white)  
-![Status](https://img.shields.io/badge/Status-Beta-yellow)  
-![Open Data](https://img.shields.io/badge/Powered_by-Open_Data-brightgreen)  
+![Python](https://img.shields.io/badge/Python-3.8+-blue?logo=python&logoColor=white)
+![Flask](https://img.shields.io/badge/Framework-Flask-000000?logo=flask&logoColor=white)
+![Chart.js](https://img.shields.io/badge/Visualization-Chart.js-ff6384?logo=chartdotjs&logoColor=white)
+![Status](https://img.shields.io/badge/Status-Beta-yellow)
+![Open Data](https://img.shields.io/badge/Powered_by-Open_Data-brightgreen)
 
-The **Gender Equality Tracker** is a data-driven web application designed to provide comprehensive insights into gender equality across Ukraine and neighboring countries. It aggregates data from reliable sources like the World Bank, OpenAlex, and Wikidata, presenting metrics on labor force participation, political representation, employment, and more. It may be easily transformed in the future to dynamically present data on multiple countries.
+The **Gender Equality Tracker** is a data-driven web application that provides comprehensive insights into gender equality across Ukraine and neighboring countries. It aggregates data from reliable sources like the World Bank, OpenAlex, and Wikidata, presenting metrics on labor force participation, political representation, employment, and more. In the future development cycles, the project may be transformed to dynamically present data on multiple countries.
 
 ![Header Screenshot](assets/header.png)  
 
 ⚠️ **This project is not finished. Expect plenty of obvious errors and rough edges.** Feedback, contributions, and suggestions are welcome to help polish it into something amazing & useful.
+
 🔖 **Please note:** The application currently takes nearly **20 seconds** to load due to the extensive fetching of live data from multiple sources. This will be optimized in future iterations to improve performance.
 
 ---
@@ -87,7 +88,7 @@ gender-equality-tracker/
 
 ## Screenshots 🖼️ 
 
-### Hero Section  
+### Header  
 ![Header Screenshot](assets/header.png)  
 
 ### Quick Overview  
@@ -109,7 +110,7 @@ gender-equality-tracker/
 
 ## Data Sources 📊  
 
-Data is levereged dynamically from the following open sources:  
+Data is leveraged dynamically from the following open sources:  
 
 - **[World Bank](https://worldbank.org)**: Global development indicators.  
 - **[OpenAlex](https://openalex.org)**: Scholarly research papers.  
